@@ -3,13 +3,16 @@ version: '3'
 services:
   db:
     image: postgres:13
-    environment:
-      POSTGRES_PASSWORD: LocalPassword
+    env_file:
+      - secrets/postgres.env
   backend:
     build: .
     command: python3 manage.py test
     volumes:
       - .:/code
+    env_file:
+      - secrets/secret_key.env
+      - secrets/postgres.env
     ports:
       - "8000:8000"
     depends_on:
